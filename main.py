@@ -9,6 +9,18 @@ create_cursor = mariadb_connection.cursor(buffered = True, dictionary = True)
 
 categCounter = 0
 
+def categoryCount():
+	global categCounter
+
+	select_content = "SELECT * FROM category"
+	create_cursor.execute(select_content)
+	mycategories = create_cursor.fetchall()
+
+	if mycategories is None:
+		categCounter = 0
+	else:
+		categCounter = 1
+
 def menu():
 	print("\nOptions:")
 	print("[1] Create task")
@@ -27,6 +39,7 @@ def menu():
 
 def createTask():
 	global categCounter
+	categoryCount()
 
 	if categCounter > 0:
 		title = input("\nEnter title of task (must not exceed 15 characters): ")
@@ -50,6 +63,7 @@ def createTask():
 
 def createCateg():
 	global categCounter
+	categoryCount()
 	categCounter += 1
 	categ_name = input("\nEnter category name (must not exceed 15 characters): ")
 	categ_description = input("Enter category description (must not exceed 100 characters): ")
@@ -123,4 +137,3 @@ while True:
 		createCateg()
 	else:
 		print("invalid input!")
-		# menu()
