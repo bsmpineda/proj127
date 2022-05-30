@@ -12,15 +12,12 @@ categCounter = 0
 def categoryCount():
 	global categCounter
 
-	select_content = "SELECT * FROM category"
+	select_content = "SELECT category_id FROM category"
 	create_cursor.execute(select_content)
-	create_cursor.fetchall()
-	length = create_cursor.rowcount
+	mycategories = create_cursor.fetchall()
 
-	if length > 0:
-		categCounter = 1
-	else:
-		categCounter = 0
+	categCounter = len(mycategories) #get the length of mycategories
+
 
 def menu():
 	print("\nOptions:")
@@ -39,8 +36,7 @@ def menu():
 
 
 def createTask():
-	# global categCounter
-	categoryCount()
+	global categCounter
 
 	if categCounter > 0:
 		title = input("\nEnter title of task (must not exceed 15 characters): ")
@@ -52,9 +48,11 @@ def createTask():
 
 		category_id = input("\nEnter task category: ")
 
-		insert_content = f"INSERT INTO task (title, details, deadline, status, category_id) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}', {category_id})"
-		create_cursor.execute(insert_content)
-		mariadb_connection.commit()
+		if check_ID(category_id,'category'):
+			insert_content = f"INSERT INTO task (title, details, deadline, status, category_id) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}', {category_id})"
+			create_cursor.execute(insert_content)
+			mariadb_connection.commit()
+			print("Succesfully created new Task!")
 	else:
 		print("Error: client must first create a category!")
 
@@ -67,6 +65,8 @@ def createCateg():
 	insert_content = f"INSERT INTO category (name, description) VALUES ('{categ_name}', '{categ_description}')"
 	create_cursor.execute(insert_content)
 	mariadb_connection.commit()
+
+	print("Succesfully created new Category!")
 
 #select all either from task or category table
 def selectAll(table):
@@ -94,8 +94,8 @@ def updateOneTask(col_name, newData, id):
 
 	
 #check if id exist
-def check_ID(id): 
-	create_cursor.execute(f"select task_id from task where task_id = '{id}'")
+def check_ID(id, table): 
+	create_cursor.execute(f"select {table}_id from {table} where {table}_id = '{id}'")
 	
 	check_exist = create_cursor.fetchall()
 	if check_exist:
@@ -108,6 +108,7 @@ def check_ID(id):
 
 
 print("\n----------------- Welcome!!! -----------------")
+categoryCount()
 
 while True:
 	c = menu()
@@ -119,15 +120,16 @@ while True:
 		createTask()
 	elif c == 2: #edit task
 		task_id = input("\nEnter id: ") #ask id
-		if check_ID(task_id): #check if id exists
+		if check_ID(task_id, 'task'): #check if id exists
 			newDetail = input("New detail: ")
 			updateOneTask('details', newDetail, task_id)
 			
 	elif c == 4: #view all task
 		selectAll('task')
 	elif c == 5: #update status into 'C'
+		#selectAll('task')
 		task_id = input("\nEnter id: ") #ask id
-		if check_ID(task_id):
+		if check_ID(task_id, 'task'):
 			complete = 'C'
 			updateOneTask('status', complete, task_id)
 	elif c == 6:
