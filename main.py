@@ -14,12 +14,13 @@ def categoryCount():
 
 	select_content = "SELECT * FROM category"
 	create_cursor.execute(select_content)
-	mycategories = create_cursor.fetchall()
+	create_cursor.fetchall()
+	length = create_cursor.rowcount
 
-	if mycategories is None:
-		categCounter = 0
-	else:
+	if length > 0:
 		categCounter = 1
+	else:
+		categCounter = 0
 
 def menu():
 	print("\nOptions:")
@@ -38,7 +39,7 @@ def menu():
 
 
 def createTask():
-	global categCounter
+	# global categCounter
 	categoryCount()
 
 	if categCounter > 0:
