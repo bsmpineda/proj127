@@ -4,7 +4,7 @@ mariadb_connection = mariadb.connect(
     user = 'proj127', password='proj127', database = 'project127', host = 'localhost', port = '3306'
 )
 
-create_cursor = mariadb_connection.create_cursor(buffered = True, dictionary = True)
+create_cursor = mariadb_connection.cursor(buffered = True, dictionary = True)
 #the database return a dictionary
 
 categCounter = 0
