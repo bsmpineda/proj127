@@ -82,13 +82,13 @@ def updateOneTask(col_name, newData, id):
 
 
 
-print("Welcome!!!")
+print("\n----------------- Welcome!!! -----------------")
 
 while True:
 	c = menu()
 
 	if c == 0:
-		print("Thank you for using the application!")
+		print("\n---- Thank you for using the application! ----")
 		break
 	elif c==1:
 		createTask()
