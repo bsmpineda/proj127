@@ -76,9 +76,28 @@ def selectAll(table):
 
 #this update a task's status or details    
 def updateOneTask(col_name, newData, id):
-    #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
-    update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
-    create_cursor.execute(update_query)
+    create_cursor.execute(f"select task_id from task where task_id = '{id}'")
+    check_exist = create_cursor.fetchall()
+    if check_exist:
+        #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
+        update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
+        create_cursor.execute(update_query)
+        print("Task with id " + id + " is edited successfully!")
+    else:
+        print("ID does not exist!")
+
+	
+#check if id exist
+def check_ID(id): 
+	create_cursor.execute(f"select task_id from task where task_id = '{id}'")
+	
+	check_exist = create_cursor.fetchall()
+	if check_exist:
+		return True
+	else:
+		print("ID does not exist!")
+		return False
+
 
 
 
@@ -93,9 +112,11 @@ while True:
 	elif c==1:
 		createTask()
 	elif c == 2: #edit task
-		task_id = input("\nEnter id: ") #ask 
-		newDetail = input("\nNew detail: ")
-		updateOneTask('details', newDetail, task_id)
+		task_id = input("\nEnter id: ") #ask id
+		if check_ID(task_id): #check if id exists
+			newDetail = input("New detail: ")
+			updateOneTask('details', newDetail, task_id)
+			
 	elif c == 4: #view all task
 		selectAll('task')
 	elif c == 6:
