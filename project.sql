@@ -5,15 +5,15 @@ DROP DATABASE IF EXISTS `project127`;
 CREATE DATABASE IF NOT EXISTS `project127`; 
 use project127;
 
-CREATE TABLE IF NOT EXISTS category(
-	category_id 	INT(5),
+CREATE TABLE category(
+	category_id 	INT(5) NOT NULL AUTO_INCREMENT,
 	name 			varchar(15),
   	description 	varchar(100),
 	CONSTRAINT category_category_id_pk PRIMARY KEY(category_id) 
 );
 
-CREATE TABLE IF NOT EXISTS task(
-	task_id	 	INT(5),	
+CREATE TABLE task(
+	task_id	 	INT(5) NOT NULL AUTO_INCREMENT,
 	title 		varchar(15) 	NOT NULL, 
 	details 	varchar(50),
 	deadline 	date,

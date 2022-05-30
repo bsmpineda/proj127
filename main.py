@@ -1,0 +1,75 @@
+import mysql.connector as mariadb
+
+mariadb_connection = mariadb.connect(
+    user = 'proj127', password='proj127', database = 'project127', host = 'localhost', port = '3306'
+)
+
+create_cursor = mariadb_connection.cursor()
+
+categCounter = 0
+
+def menu():
+	print("\nOptions:")
+	print("[1] Create task")
+	print("[2] Edit task")
+	print("[3] Delete task")
+	print("[4] View all task")
+	print("[5] Mark task as done")
+	print("[6] Add category")
+	print("[7] Delete category")
+	print("[8] View category")
+	print("[9] Add taks to a category")
+	print("[0] Exit")
+	choice = int(input("Choice: "))
+	return choice
+
+
+def createTask():
+	global categCounter
+
+	if categCounter > 0:
+		title = input("\nEnter title of task (must not exceed 15 characters): ")
+		details = input("Enter task detail (must not exceed 50 characters): ")
+		deadline = input("Enter deadline date (format: YYYY/MM/DD): ")
+		status = "INC"
+
+		select_content = "SELECT * FROM category"
+		create_cursor.execute(select_content)
+		mycategories = create_cursor.fetchall()
+		print("\nList of existing categories\n")
+		print(mycategories)
+
+		category_id = input("Enter task category: ")
+
+		insert_content = f"INSERT INTO task (title, details, deadline, status, category_id) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}', {category_id})"
+		create_cursor.execute(insert_content)
+		mariadb_connection.commit()
+	else:
+		print("Error: client must first create a category!")
+
+def createCateg():
+	global categCounter
+	categCounter += 1
+	categ_name = input("\nEnter category name (must not exceed 15 characters): ")
+	categ_description = input("Enter category description (must not exceed 100 characters): ")
+	insert_content = f"INSERT INTO category (name, description) VALUES ('{categ_name}', '{categ_description}')"
+	create_cursor.execute(insert_content)
+	mariadb_connection.commit()
+
+
+
+print("Welcome!!!")
+
+while True:
+	c = menu()
+
+	if c == 0:
+		print("Thank you for using the application!")
+		break
+	elif c==1:
+		createTask()
+	elif c == 6:
+		createCateg()
+	else:
+		print("invalid input!")
+		# menu()
