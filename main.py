@@ -76,15 +76,10 @@ def selectAll(table):
 
 #this update a task's status or details    
 def updateOneTask(col_name, newData, id):
-    create_cursor.execute(f"select task_id from task where task_id = '{id}'")
-    check_exist = create_cursor.fetchall()
-    if check_exist:
-        #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
-        update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
-        create_cursor.execute(update_query)
-        print("Task with id " + id + " is edited successfully!")
-    else:
-        print("ID does not exist!")
+    #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
+    update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
+    create_cursor.execute(update_query)
+    print("Task's " + col_name + " with id #" + id + " is updated successfully!")
 
 	
 #check if id exist
@@ -119,6 +114,11 @@ while True:
 			
 	elif c == 4: #view all task
 		selectAll('task')
+	elif c == 5: #update status into 'C'
+		task_id = input("\nEnter id: ") #ask id
+		if check_ID(task_id):
+			complete = 'C'
+			updateOneTask('status', complete, task_id)
 	elif c == 6:
 		createCateg()
 	else:
