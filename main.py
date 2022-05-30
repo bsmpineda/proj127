@@ -48,11 +48,7 @@ def createTask():
 		deadline = input("Enter deadline date (format: YYYY/MM/DD): ")
 		status = "INC"
 
-		select_content = "SELECT * FROM category"
-		create_cursor.execute(select_content)
-		mycategories = create_cursor.fetchall()
-		print("\nList of existing categories\n")
-		print(mycategories)
+		selectAll('category')
 
 		category_id = input("\nEnter task category: ")
 
