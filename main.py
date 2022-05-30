@@ -53,7 +53,7 @@ def createTask():
 		print("\nList of existing categories\n")
 		print(mycategories)
 
-		category_id = input("Enter task category: ")
+		category_id = input("\nEnter task category: ")
 
 		insert_content = f"INSERT INTO task (title, details, deadline, status, category_id) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}', {category_id})"
 		create_cursor.execute(insert_content)
