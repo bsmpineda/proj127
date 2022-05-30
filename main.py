@@ -104,7 +104,9 @@ def check_ID(id, table):
 		print("ID does not exist!")
 		return False
 
-
+def deleteTask(id):
+	delete_query = "DELETE FROM task WHERE task_id =" + str(id)
+	create_cursor.execute(delete_query)
 
 
 print("\n----------------- Welcome!!! -----------------")
@@ -123,6 +125,11 @@ while True:
 		if check_ID(task_id, 'task'): #check if id exists
 			newDetail = input("New detail: ")
 			updateOneTask('details', newDetail, task_id)
+	
+	elif c == 3: #delete task
+		task_id = input("\Ented id: ")
+		if check_ID(task_id, 'task'):
+			deleteTask(task_id)
 			
 	elif c == 4: #view all task
 		selectAll('task')
