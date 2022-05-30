@@ -4,7 +4,8 @@ mariadb_connection = mariadb.connect(
     user = 'proj127', password='proj127', database = 'project127', host = 'localhost', port = '3306'
 )
 
-create_cursor = mariadb_connection.cursor()
+create_cursor = mariadb_connection.create_cursor(buffered = True, dictionary = True)
+#the database return a dictionary
 
 categCounter = 0
 
@@ -56,6 +57,29 @@ def createCateg():
 	create_cursor.execute(insert_content)
 	mariadb_connection.commit()
 
+#select all either from task or category table
+def selectAll(table):
+
+    select_query = 'SELECT * FROM {}'
+    create_cursor.execute(select_query.format(table))
+
+    selected_items = create_cursor.fetchall() #fetch all the matched tuples
+    #selected_items is a DICTIONARY
+
+    print('\n')
+
+    for x in selected_items:
+        for key, value in x.items():
+           print(str(key) + ": " +  str(value)) # key: value
+        print('\n')
+
+
+#this update a task's status or details    
+def updateOneTask(col_name, newData, id):
+    #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
+    update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
+    create_cursor.execute(update_query)
+
 
 
 print("Welcome!!!")
@@ -68,6 +92,12 @@ while True:
 		break
 	elif c==1:
 		createTask()
+	elif c == 2: #edit task
+		task_id = input("\nEnter id: ") #ask 
+		newDetail = input("\nNew detail: ")
+		updateOneTask('details', newDetail, task_id)
+	elif c == 4: #view all task
+		selectAll('task')
 	elif c == 6:
 		createCateg()
 	else:
