@@ -162,14 +162,19 @@ while True:
 			elif choiceNum == 2:
 				newData = input("\nNew deadline date (format: YYYY/MM/DD): ")
 				colname = 'deadline'
-			elif choiceNum == 3:
-				printAll('category')
-				newData = input("New category: ")
-				colname = 'category_id' 
-				if not(check_ID(newData, 'category')):
-					newData = None
+			elif choiceNum == 2:
+				newData = input("\nNew deadline date (format: YYYY/MM/DD): ")
+				colname = 'deadline'
+			# elif choiceNum == 3:
+			# 	printAll('category')
+			# 	newData = input("New category: ")
+			# 	colname = 'category_id' 
+			# 	if not(check_ID(newData, 'category')):
+			# 		newData = None
 							
-			else: newData = None
+			else:
+				print("Invalid Choice!") 
+				newData = None
 			
 			if newData is not None:
 				updateOneTask(colname, newData, task_id)
