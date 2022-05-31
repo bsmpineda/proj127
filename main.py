@@ -123,6 +123,16 @@ def addTasktoCategory(task_id, categ_id):
 	mariadb_connection.commit()
 	print("Task is successfully added to a category!")
 
+def deleteCateg(id):
+	delete_tasks = "DELETE FROM task WHERE category_id =" + str(id)
+	create_cursor.execute(delete_tasks)
+	mariadb_connection.commit()
+
+	delete_category= "DELETE FROM category WHERE category_id =" + str(id)
+	create_cursor.execute(delete_category)
+	mariadb_connection.commit()
+	print("Category is successfully deleted!")
+
 
 print("\n----------------- Welcome!!! -----------------")
 categoryCount()
@@ -190,6 +200,11 @@ while True:
 			updateOneTask('status', complete, task_id)
 	elif c == 6:
 		createCateg()
+
+	elif c == 7:
+		category_id = input("\nEnter category id: ")
+		if check_ID(category_id, 'category'):
+			deleteCateg(category_id)	
 		
 	elif c == 8: #view all category
 		printAll('category') #for all
