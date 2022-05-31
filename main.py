@@ -65,31 +65,39 @@ def createCateg():
 
 #select all from the 'table' then return a list of dictionary
 def selectAll(table):
-    select_query = 'SELECT * FROM {}'
-    create_cursor.execute(select_query.format(table))
+	select_query = 'SELECT * FROM {}'
+	create_cursor.execute(select_query.format(table))
 
-    selected_items = create_cursor.fetchall() #fetch all the matched tuples
-    #selected_items is a DICTIONARY
-
-    return selected_items
+	selected_items = create_cursor.fetchall() #fetch all the matched tuples
+	#selected_items is a DICTIONARY
+	
+	if create_cursor.rowcount == 0:
+		print("\n"+ table + " is empty!")
+	
+	else:
+		return selected_items
 
 #print all either from task or category table
 def printAll(table):
 	selected_items = selectAll(table)
 	print('\n')
 	
-	for x in selected_items:
-		for key, value in x.items():
-			print(str(key) + ": " +  str(value)) # key: value
+	if selected_items != None:
 
-		if table=='task':
-			id = x["category_id"]
-			create_cursor.execute(f"select name from category where category_id = '{id}'")
-			categName = create_cursor.fetchone() #get the query
-			name = categName["name"] #get the value
-			print(f"Category name: {name}")
-			
-		print('\n')
+		for x in selected_items:
+			for key, value in x.items():
+				print(str(key) + ": " +  str(value)) # key: value
+
+			if table=='task':
+				id = x["category_id"]
+
+				if id != None:
+					create_cursor.execute(f"select name from category where category_id = '{id}'")
+					categName = create_cursor.fetchone() #get the query
+					name = categName["name"] #get the value
+					print(f"Category name: {name}")
+				
+			print('\n')
 		
 def updateOneTask(col_name, newData, id):
     #UPDATE task SET <col_name> = <newData> WHERE task_id = <id> 
