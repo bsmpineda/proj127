@@ -82,18 +82,22 @@ def selectAll(table):
 
 #print all either from task or category table
 def printAll(table):
+	selected_items = selectAll(table)
+	print('\n')
+	
+	for x in selected_items:
+		for key, value in x.items():
+			print(str(key) + ": " +  str(value)) # key: value
 
-    selected_items = selectAll(table)
-
-    print('\n')
-
-    for x in selected_items:
-        for key, value in x.items():
-           print(str(key) + ": " +  str(value)) # key: value
-        print('\n')
-
-
-#this update a task's status or details    
+		if table=='task':
+			id = x["category_id"]
+			create_cursor.execute(f"select name from category where category_id = '{id}'")
+			categName = create_cursor.fetchone() #get the query
+			name = categName["name"] #get the value
+			print(f"Category name: {name}")
+			
+		print('\n')
+		
 def updateOneTask(col_name, newData, id):
     #UPDATE task SET <col_name> = <newData> WHERE task_id = <id> 
 	update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
@@ -121,8 +125,8 @@ def deleteTask(id):
 	print("Task is successfully deleted!")
 
 def addTasktoCategory(task_id, categ_id):
-	addTaskToCateg_query = "UPDATE task SET category_id" + str(categ_id) + "WHERE task_id = " + str(task_id);
-	create_cursor.execute(addTasktoCategory_query)
+	query = f"UPDATE task SET category_id = '{categ_id}' WHERE task_id = '{task_id}'"
+	create_cursor.execute(query)
 	mariadb_connection.commit()
 	print("Task is successfully added to a category!")
 
@@ -196,9 +200,9 @@ while True:
 	elif c == 9: #add task to a category
 		task_id = input("\nEnter id: ")
 		if check_ID(task_id, 'task'):
-			categ_id = input("\Enter category id: ")
-			if check_ID(categ_id, 'category')
-			addTasktoCategory(task_id, categ_id)
+			categ_id = input("\nEnter category id: ")
+			if check_ID(categ_id, 'category'):
+				addTasktoCategory(task_id, categ_id)
 		
 	else:
 		print("invalid input!")
