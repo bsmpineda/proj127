@@ -142,8 +142,9 @@ def deleteCateg(id):
 	print("Category is successfully deleted!")
 	
 def viewACategory(categ_id):
-	view_query = "SELECT * FROM category JOIN task ON category.task_id = task.task_id WHERE categ_id =" + str(categ_id)
-	create_cursor.execute(viewACategory)
+	view_query = "SELECT * FROM category JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(categ_id)
+	create_cursor.execute(view_query)
+	#print
 	mariadb_connection.commit()
 
 
@@ -220,13 +221,11 @@ while True:
 			deleteCateg(category_id)	
 		
 	elif c == 8: #view all category
-		global categCounter
-		
 		if categCounter > 0:
 			print("[1] View all category")
 			print("[2] View a category")
 
-			category_choice = input("Choose an option: ")
+			category_choice = int(input("Choose an option: "))
 
 			if category_choice == 1:
 				printAll('category') #for all
@@ -234,8 +233,8 @@ while True:
 
 			if category_choice == 2:
 				categ_id = input("Enter category id: ")
-				if check_ID(categ_id, 'category'):
-					viewACateg(categ_id)
+				#if check_ID(categ_id, 'category'):
+				viewACategory(categ_id)
 				
 		else: 
 			print("Error: client must first create a category!")
