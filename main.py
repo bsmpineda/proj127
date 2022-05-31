@@ -84,10 +84,12 @@ def printAll(table):
 
 		if table=='task':
 			id = x["category_id"]
-			create_cursor.execute(f"select name from category where category_id = '{id}'")
-			categName = create_cursor.fetchone() #get the query
-			name = categName["name"] #get the value
-			print(f"Category name: {name}")
+
+			if id != None:
+				create_cursor.execute(f"select name from category where category_id = '{id}'")
+				categName = create_cursor.fetchone() #get the query
+				name = categName["name"] #get the value
+				print(f"Category name: {name}")
 			
 		print('\n')
 		
@@ -124,6 +126,7 @@ def addTasktoCategory(task_id, categ_id):
 	print("Task is successfully added to a category!")
 
 def deleteCateg(id):
+	# delete_tasks = "DELETE category, task FROM category INNER JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(id)
 	delete_tasks = "DELETE FROM task WHERE category_id =" + str(id)
 	create_cursor.execute(delete_tasks)
 	mariadb_connection.commit()
