@@ -179,6 +179,7 @@ while True:
 			
 	elif c == 4: #view all task
 		printAll('task')
+		#kelangan din iprint ung categ_name
 	elif c == 5: #update status into 'C'
 		#printAll('task')
 		task_id = input("\nEnter id: ") #ask id
