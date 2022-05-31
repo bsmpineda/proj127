@@ -144,8 +144,9 @@ def deleteCateg(id):
 def viewACategory(categ_id):
 	view_query = "SELECT * FROM category JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(categ_id)
 	create_cursor.execute(view_query)
-	#print
-	mariadb_connection.commit()
+	result = create_cursor(fetchall)
+	print(result)
+	#mariadb_connection.commit()
 
 
 print("\n----------------- Welcome!!! -----------------")
