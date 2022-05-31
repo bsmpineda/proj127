@@ -107,6 +107,8 @@ def check_ID(id, table):
 def deleteTask(id):
 	delete_query = "DELETE FROM task WHERE task_id =" + str(id)
 	create_cursor.execute(delete_query)
+	mariadb_connection.commit()
+	print("Task is successfully deleted!")
 
 
 print("\n----------------- Welcome!!! -----------------")
@@ -127,7 +129,7 @@ while True:
 			updateOneTask('details', newDetail, task_id)
 	
 	elif c == 3: #delete task
-		task_id = input("\Ented id: ")
+		task_id = input("\nEnted id: ")
 		if check_ID(task_id, 'task'):
 			deleteTask(task_id)
 			
