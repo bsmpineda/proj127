@@ -31,7 +31,7 @@ def menu():
 	print("[6] Add category")
 	print("[7] Delete category")
 	print("[8] View category")
-	print("[9] Add taks to a category")
+	print("[9] Add task to a category")
 	print("[0] Exit")
 	choice = int(input("Choice: "))
 	return choice
@@ -120,6 +120,12 @@ def deleteTask(id):
 	mariadb_connection.commit()
 	print("Task is successfully deleted!")
 
+def addTasktoCategory(task_id, categ_id):
+	addTaskToCateg_query = "UPDATE task SET category_id" + str(categ_id) + "WHERE task_id = " + str(task_id);
+	create_cursor.execute(addTasktoCategory)
+	mariadb_connection.commit()
+	print("Task is successfully added to a category!")
+
 
 print("\n----------------- Welcome!!! -----------------")
 categoryCount()
@@ -167,7 +173,7 @@ while True:
 				print("Unsuccessful edit\n")
 	
 	elif c == 3: #delete task
-		task_id = input("\nEnted id: ")
+		task_id = input("\nEnter id: ")
 		if check_ID(task_id, 'task'):
 			deleteTask(task_id)
 			
@@ -181,5 +187,16 @@ while True:
 			updateOneTask('status', complete, task_id)
 	elif c == 6:
 		createCateg()
+		
+	elif c == 8: #view all category
+		printAll('category')
+		
+	elif c == 9: #add task to a category
+		task_id = input("\nEnter id: ")
+		if check_ID(task_id, 'task'):
+			categ_id = input("\Enter category id: ")
+			if check_ID(categ_id, 'category')
+			addTasktoCategory(task_id, categ_id)
+		
 	else:
 		print("invalid input!")
