@@ -84,12 +84,10 @@ def printAll(table):
 
 		if table=='task':
 			id = x["category_id"]
-
-			if id != None:
-				create_cursor.execute(f"select name from category where category_id = '{id}'")
-				categName = create_cursor.fetchone() #get the query
-				name = categName["name"] #get the value
-				print(f"Category name: {name}")
+			create_cursor.execute(f"select name from category where category_id = '{id}'")
+			categName = create_cursor.fetchone() #get the query
+			name = categName["name"] #get the value
+			print(f"Category name: {name}")
 			
 		print('\n')
 		
@@ -126,7 +124,6 @@ def addTasktoCategory(task_id, categ_id):
 	print("Task is successfully added to a category!")
 
 def deleteCateg(id):
-	# delete_tasks = "DELETE category, task FROM category INNER JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(id)
 	delete_tasks = "DELETE FROM task WHERE category_id =" + str(id)
 	create_cursor.execute(delete_tasks)
 	mariadb_connection.commit()
@@ -135,6 +132,11 @@ def deleteCateg(id):
 	create_cursor.execute(delete_category)
 	mariadb_connection.commit()
 	print("Category is successfully deleted!")
+	
+def viewACategory(categ_id):
+	view_query = "SELECT * FROM category JOIN task ON category.task_id = task.task_id WHERE categ_id =" + str(categ_id)
+	create_cursor.execute(viewACategory)
+	mariadb_connection.commit()
 
 
 print("\n----------------- Welcome!!! -----------------")
@@ -155,7 +157,7 @@ while True:
 			ctr = 0
 			print("what do you want to edit:")
 			for key in taskTable[0]:
-				if key != 'task_id' and key != 'status' and key != 'category_id':
+				if key != 'task_id' and key != 'status':
 					print(f"\t[{ctr}] {key}")
 					ctr += 1
 			choiceNum = int(input("\tChoice: "))
@@ -188,7 +190,7 @@ while True:
 				print("Unsuccessful edit\n")
 	
 	elif c == 3: #delete task
-		task_id = input("\nEnter id: ")
+		task_id = int(input("\nEnter id: "))
 		if check_ID(task_id, 'task'):
 			deleteTask(task_id)
 			
@@ -210,8 +212,26 @@ while True:
 			deleteCateg(category_id)	
 		
 	elif c == 8: #view all category
-		printAll('category') #for all
-		#dapat pala isa isa, ayusin ko na lang HAHAHA
+		global categCounter
+		
+		if categCounter > 0:
+			print("[1] View all category")
+			print("[2] View a category")
+
+			category_choice = input("Choose an option: ")
+
+			if category_choice == 1:
+				printAll('category') #for all
+			#dapat pala isa isa, ayusin ko na lang HAHAHA
+
+			if category_choice == 2:
+				categ_id = input("Enter category id: ")
+				if check_ID(categ_id, 'category'):
+					viewACateg(categ_id)
+				
+		else: 
+			print("Error: client must first create a category!")
+			
 		
 	elif c == 9: #add task to a category
 		categCounter
