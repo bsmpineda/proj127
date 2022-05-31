@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from email.policy import default
 import mysql.connector as mariadb
 
@@ -40,23 +40,16 @@ def menu():
 def createTask():
 	global categCounter
 
-	if categCounter > 0:
-		title = input("\nEnter title of task (must not exceed 15 characters): ")
-		details = input("Enter task detail (must not exceed 50 characters): ")
-		deadline = input("Enter deadline date (format: YYYY/MM/DD): ")
-		status = "INC"
+	title = input("\nEnter title of task (must not exceed 15 characters): ")
+	details = input("Enter task detail (must not exceed 50 characters): ")
+	deadline = input("Enter deadline date (format: YYYY/MM/DD): ")
+	status = "INC"
 
-		printAll('category')
+	insert_content = f"INSERT INTO task (title, details, deadline, status) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}')"
+	create_cursor.execute(insert_content)
+	mariadb_connection.commit()
+	print("Succesfully created new Task!")
 
-		category_id = input("\nEnter task category: ")
-
-		if check_ID(category_id,'category'):
-			insert_content = f"INSERT INTO task (title, details, deadline, status, category_id) VALUES ('{title}', '{details}', STR_TO_DATE('{deadline}', '%Y/%m/%d'), '{status}', {category_id})"
-			create_cursor.execute(insert_content)
-			mariadb_connection.commit()
-			print("Succesfully created new Task!")
-	else:
-		print("Error: client must first create a category!")
 
 def createCateg():
 	global categCounter
@@ -203,13 +196,14 @@ while True:
 		#dapat pala isa isa, ayusin ko na lang HAHAHA
 		
 	elif c == 9: #add task to a category
-		global categCounter
+		categCounter
 		
-		task_id = input("\nEnter id: ")
+		task_id = input("\nEnter task id: ")
 		if check_ID(task_id, 'task'):
 			
 			if categCounter > 0:
-				categ_id = input("\nEnter category id: ")
+				printAll('category')
+				categ_id = input("Enter category id: ")
 				if check_ID(categ_id, 'category'):
 					addTasktoCategory(task_id, categ_id)
 			else:
