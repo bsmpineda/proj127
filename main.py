@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from email.policy import default
 import mysql.connector as mariadb
 
 mariadb_connection = mariadb.connect(
@@ -44,7 +46,7 @@ def createTask():
 		deadline = input("Enter deadline date (format: YYYY/MM/DD): ")
 		status = "INC"
 
-		selectAll('category')
+		printAll('category')
 
 		category_id = input("\nEnter task category: ")
 
@@ -68,14 +70,20 @@ def createCateg():
 
 	print("Succesfully created new Category!")
 
-#select all either from task or category table
+#select all from the 'table' then return a list of dictionary
 def selectAll(table):
-
     select_query = 'SELECT * FROM {}'
     create_cursor.execute(select_query.format(table))
 
     selected_items = create_cursor.fetchall() #fetch all the matched tuples
     #selected_items is a DICTIONARY
+
+    return selected_items
+
+#print all either from task or category table
+def printAll(table):
+
+    selected_items = selectAll(table)
 
     print('\n')
 
@@ -87,10 +95,12 @@ def selectAll(table):
 
 #this update a task's status or details    
 def updateOneTask(col_name, newData, id):
-    #UPDATE task SET <col_name> = <newData> WHERE task_id = <id>
-    update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
-    create_cursor.execute(update_query)
-    print("Task's " + col_name + " with id #" + id + " is updated successfully!")
+    #UPDATE task SET <col_name> = <newData> WHERE task_id = <id> 
+	update_query = "UPDATE task SET " + col_name + " = '"+ newData +"' WHERE task_id = " + str(id) 
+	create_cursor.execute(update_query) 
+	mariadb_connection.commit()
+	print("Task's " + col_name + " with id #" + id + " is updated successfully!")
+	
 
 	
 #check if id exist
@@ -125,8 +135,36 @@ while True:
 	elif c == 2: #edit task
 		task_id = input("\nEnter id: ") #ask id
 		if check_ID(task_id, 'task'): #check if id exists
-			newDetail = input("New detail: ")
-			updateOneTask('details', newDetail, task_id)
+			taskTable = selectAll('task') #get task table
+			ctr = 0
+			print("what do you want to edit:")
+			for key in taskTable[0]:
+				if key != 'task_id' and key != 'status':
+					print(f"\t[{ctr}] {key}")
+					ctr += 1
+			choiceNum = int(input("\tChoice: "))
+			if choiceNum == 0:
+				newData = input("\nNew title (must not exceed 15 characters): ")
+				colname = 'title'
+			elif choiceNum == 1:
+				newData = input("\nNew task details (must not exceed 50 characters): ")
+				colname = 'details'
+			elif choiceNum == 2:
+				newData = input("\nNew deadline date (format: YYYY/MM/DD): ")
+				colname = 'deadline'
+			elif choiceNum == 3:
+				printAll('category')
+				newData = input("New category: ")
+				colname = 'category_id' 
+				if not(check_ID(newData, 'category')):
+					newData = None
+							
+			else: newData = None
+			
+			if newData is not None:
+				updateOneTask(colname, newData, task_id)
+			else:
+				print("Unsuccessful edit\n")
 	
 	elif c == 3: #delete task
 		task_id = input("\nEnted id: ")
@@ -134,9 +172,9 @@ while True:
 			deleteTask(task_id)
 			
 	elif c == 4: #view all task
-		selectAll('task')
+		printAll('task')
 	elif c == 5: #update status into 'C'
-		#selectAll('task')
+		#printAll('task')
 		task_id = input("\nEnter id: ") #ask id
 		if check_ID(task_id, 'task'):
 			complete = 'C'
