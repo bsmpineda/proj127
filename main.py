@@ -155,7 +155,7 @@ while True:
 			ctr = 0
 			print("what do you want to edit:")
 			for key in taskTable[0]:
-				if key != 'task_id' and key != 'status':
+				if key != 'task_id' and key != 'status' and key != 'category_id':
 					print(f"\t[{ctr}] {key}")
 					ctr += 1
 			choiceNum = int(input("\tChoice: "))
