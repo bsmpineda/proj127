@@ -149,7 +149,7 @@ while True:
 			ctr = 0
 			print("what do you want to edit:")
 			for key in taskTable[0]:
-				if key != 'task_id' and key != 'status' and key != 'category_id':
+				if key != 'task_id' and key != 'status':
 					print(f"\t[{ctr}] {key}")
 					ctr += 1
 			choiceNum = int(input("\tChoice: "))
@@ -203,11 +203,17 @@ while True:
 		#dapat pala isa isa, ayusin ko na lang HAHAHA
 		
 	elif c == 9: #add task to a category
+		global categCounter
+		
 		task_id = input("\nEnter id: ")
 		if check_ID(task_id, 'task'):
-			categ_id = input("\nEnter category id: ")
-			if check_ID(categ_id, 'category'):
-				addTasktoCategory(task_id, categ_id)
+			
+			if categCounter > 0:
+				categ_id = input("\nEnter category id: ")
+				if check_ID(categ_id, 'category'):
+					addTasktoCategory(task_id, categ_id)
+			else:
+				print("Error: client must first create a category!")
 		
 	else:
 		print("invalid input!")
