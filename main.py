@@ -122,7 +122,7 @@ def deleteTask(id):
 
 def addTasktoCategory(task_id, categ_id):
 	addTaskToCateg_query = "UPDATE task SET category_id" + str(categ_id) + "WHERE task_id = " + str(task_id);
-	create_cursor.execute(addTasktoCategory)
+	create_cursor.execute(addTasktoCategory_query)
 	mariadb_connection.commit()
 	print("Task is successfully added to a category!")
 
@@ -189,7 +189,8 @@ while True:
 		createCateg()
 		
 	elif c == 8: #view all category
-		printAll('category')
+		printAll('category') #for all
+		#dapat pala isa isa, ayusin ko na lang HAHAHA
 		
 	elif c == 9: #add task to a category
 		task_id = input("\nEnter id: ")
