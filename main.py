@@ -183,12 +183,6 @@ while True:
 			elif choiceNum == 2:
 				newData = input("\nNew deadline date (format: YYYY/MM/DD): ")
 				colname = 'deadline'
-			# elif choiceNum == 3:
-			# 	printAll('category')
-			# 	newData = input("New category: ")
-			# 	colname = 'category_id' 
-			# 	if not(check_ID(newData, 'category')):
-			# 		newData = None
 							
 			else:
 				print("Invalid Choice!") 
@@ -206,9 +200,8 @@ while True:
 			
 	elif c == 4: #view all task
 		printAll('task')
-		#kelangan din iprint ung categ_name
+		
 	elif c == 5: #update status into 'C'
-		#printAll('task')
 		task_id = input("\nEnter id: ") #ask id
 		if check_ID(task_id, 'task'):
 			complete = 'C'
