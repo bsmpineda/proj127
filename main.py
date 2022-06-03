@@ -142,19 +142,28 @@ def deleteCateg(id):
 	print("Category is successfully deleted!")
 	
 def viewACategory(categ_id):
-	view_query = "SELECT * FROM category JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(categ_id)
-	create_cursor.execute(view_query)
-	result = create_cursor.fetchone()
-	
-	name = result["name"]
-	description = result["decription"]
-	categoryid = result["categoryid"]
-	
-	print(f"Category name: {name}")		    
-	print(f"Descriptiom: {description}")	
-	print(f"Category ID: {categoryid}")
-	
-	#mariadb_connection.commit()
+    view_query = "SELECT * FROM category JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(categ_id)
+    create_cursor.execute(view_query)
+    result = create_cursor.fetchone()
+    
+    name = result["name"]
+    description = result["description"]
+	#tasks = result["task"]
+    
+    print(f"\nCategory name: {name}")
+    print(f"Descriptiom: {description}")
+    print(f"Category ID: " + str(categ_id))
+    
+    create_cursor.execute(f"select title from task where category_id = '{categ_id}'")
+    task_name = create_cursor.fetchall()
+
+    print(f"Tasks:")
+    
+    for x in task_name:
+        for key, value in x.items():
+            print("\t" + str(value)) # key: value
+
+
 
 print("\n----------------- Welcome!!! -----------------")
 categoryCount()
@@ -223,17 +232,17 @@ while True:
 		
 	elif c == 8: #view all category
 		if categCounter > 0:
-			print("[1] View all category")
+			print("\n[1] View all category")
 			print("[2] View a category")
 
-			category_choice = int(input("Choose an option: "))
+			category_choice = int(input("\nChoose an option: "))
 
 			if category_choice == 1:
 				printAll('category') #for all
 			#dapat pala isa isa, ayusin ko na lang HAHAHA
 
-			if category_choice == 2:
-				categ_id = input("Enter category id: ")
+			elif category_choice == 2:
+				categ_id = int(input("Enter category id: "))
 				#if check_ID(categ_id, 'category'):
 				viewACategory(categ_id)
 				
