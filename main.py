@@ -25,16 +25,17 @@ def categoryCount():
 # function that displays the menu list
 def menu():
 	print("\nOptions:")
-	print("[1] Create task")
-	print("[2] Edit task")
-	print("[3] Delete task")
-	print("[4] View all task")
-	print("[5] Mark task as done")
-	print("[6] Add category")
-	print("[7] Delete category")
-	print("[8] View category")
-	print("[9] Add task to a category")
-	print("[0] Exit")
+	print("[1]  Create task")
+	print("[2]  Edit task")
+	print("[3]  Delete task")
+	print("[4]  View all task")
+	print("[5]  Mark task as done")
+	print("[6]  Add category")
+	print("[7]  Delete category")
+	print("[8]  View category")
+	print("[9]  Add task to a category")
+	print("[10] Edit Category")
+	print("[0]  Exit")
 	choice = int(input("Choice: "))
 	return choice
 
@@ -136,6 +137,14 @@ def createCateg(categ_name, categ_description):
 
 	print("Succesfully created new Category!") # prompts that the category has been created
 
+#function that edits a category
+def editCateg(col_name, newData, id):
+    #UPDATE category SET <col_name> = <newData> WHERE task_id = <id> 
+	update_query = "UPDATE category SET " + col_name + " = '"+ newData +"' WHERE category_id = " + str(id) #query for editing category
+	create_cursor.execute(update_query) #execute the query
+	mariadb_connection.commit() #commit
+	print("Category's " + col_name + " with id #" + id + " is updated successfully!")
+	
 # function that deletes a category
 def deleteCateg(id):
 	delete_tasks = "DELETE FROM task WHERE category_id =" + str(id) # query statement
@@ -215,7 +224,7 @@ while True:
 
 		if check_ID(task_id, 'task'): #checks if id exists
 			taskTable = selectAll('task') #gets task table
-			ctr = 0
+			ctr = 0 #for numbering
 
 			# asks the use which part of the task they want to edit
 			print("what do you want to edit:")
@@ -288,8 +297,7 @@ while True:
 
 				if category_choice == 1:
 					printAll('category') #for all
-				#dapat pala isa isa, ayusin ko na lang HAHAHA
-
+					
 				elif category_choice == 2:
 					try:
 						categ_id = int(input("Enter category id: "))
@@ -323,6 +331,42 @@ while True:
 					addTasktoCategory(task_id, categ_id)
 			else:
 				print("Error: client must first create a category!")
+				
+	elif c == 10: #edit category
+		category_id = input("\nEnter id: ") #asks for an id
+
+		if check_ID(category_id, 'category'): #checks if id exists
+			categTable = selectAll('category') #gets category table
+			ctr = 0 #for numbering
+
+			# asks the use which part of the category they want to edit
+			print("what do you want to edit:")
+			for key in categTable[0]:
+				if key != 'category_id':
+					print(f"\t[{ctr}] {key}")
+					ctr += 1
+
+			try:
+				choiceNum = int(input("\tChoice: ")) # waits for the user's input
+
+				if choiceNum == 0: # edits the name of the category
+					newData = input("\nNew category name (must not exceed 15 characters): ")
+					colname = 'name'
+				elif choiceNum == 1: # edits the description of the category
+					newData = input("\nNew category description (must not exceed 100 characters): ")
+					colname = 'description'	
+				else: # prompts that the user chose an invalid input
+					print("Invalid Choice!") 
+					newData = None
+
+				if newData is not None:
+					editCateg(colname, newData, category_id) # updates the category
+				else:
+					print("Unsuccessful edit\n") # prompts that the edit is unsuccessful
+
+			except ValueError: # if the user ever types a character rather than an integer
+				print("Invalid Choice!") # prompts that the choice is invalid input
+				print("Unsuccessful edit\n") # prompts that the edit is unsuccessful
 
 	else:
 		print("invalid input!") # prompts that the choice is invalid input
