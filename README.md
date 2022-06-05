@@ -3,6 +3,12 @@ CMSC 127 PROJECT By:
     Alexa Cordero
     Brixter Sien Pineda 
     Vincent Rodriguez
+    Jakie Brabante
+
+Task Record System:
+
+    A simplified version of a task listing app where you can list a task and put it in a category
+
 
 The app requires the following:
 
@@ -10,9 +16,18 @@ The app requires the following:
         main.py
     and MariaDB Command Prompt for creating the DATABASE
         project.sql
+        
+    To set up:
+         1. install mysql.connector using PIP.
+            installation guide link: https://phoenixnap.com/kb/install-pip-windows 
+            
+         2. Install mysql.connector.
+            installation guide link: https://www.w3schools.com/python/python_mysql_getstarted.asp
+            
+         3. After installation, run the sql file (project.sql)
+         
+         5. Lastly, run the python code (main.py)
 
-Task Record System:
-    A simplified version of a task listing app where you can list a task and put it in a category
 
 App features: 
 
