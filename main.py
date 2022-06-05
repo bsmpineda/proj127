@@ -176,9 +176,6 @@ def viewACategory(categ_id):
 			for key, value in x.items():
 				print("\t" + str(value)) # key: value
 
-	else:
-		print("No task in this category!")
-
 def addTasktoCategory(task_id, categ_id):
 	query = f"UPDATE task SET category_id = '{categ_id}' WHERE task_id = '{task_id}'"
 	create_cursor.execute(query)
