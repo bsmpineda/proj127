@@ -306,7 +306,8 @@ while True:
 						if categCounter == 0:
 							print("Error: client must first create a category!")
 						else: 
-							viewACategory(categ_id)
+							if check_ID(categ_id, 'category'):
+								viewACategory(categ_id)
 
 					except ValueError:
 						print("Invalid Choice!")
