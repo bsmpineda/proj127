@@ -4,12 +4,12 @@ CMSC 127 PROJECT By:
     Brixter Sien Pineda 
     Vincent Rodriguez
 
-The requires the following:
+The app requires the following:
 
     A terminal for the python code
         main.py
     and MariaDB Command Prompt for creating the DATABASE
-        proj127.sql
+        project.sql
 
 Task Record System:
     A simplified version of a task listing app where you can list a task and put it in a category
