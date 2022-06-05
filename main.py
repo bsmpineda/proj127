@@ -157,17 +157,14 @@ def deleteCateg(id):
 	print("Category is successfully deleted!") # prompts that the category has been deleted
 
 def viewACategory(categ_id):
-	view_query = "SELECT * FROM category JOIN task ON category.category_id = task.category_id WHERE task.category_id =" + str(categ_id)
+	view_query = "SELECT * FROM category WHERE category_id =" + str(categ_id)
 	create_cursor.execute(view_query)
 	result = create_cursor.fetchone()
-	
-	name = result["name"]
-	description = result["description"]
-	#tasks = result["task"]
-	
-	print(f"\nCategory name: {name}")
-	print(f"Descriptiom: {description}")
-	print(f"Category ID: " + str(categ_id))
+
+	print("\n")
+	if result != None:
+		for key, value in result.items():
+			print(f"{key} : {value}")
 	
 	create_cursor.execute(f"select title from task where category_id = '{categ_id}'")
 	task_name = create_cursor.fetchall()
