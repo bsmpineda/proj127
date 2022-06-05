@@ -156,30 +156,32 @@ def deleteCateg(id):
 	mariadb_connection.commit() # commits the changes to the database
 	print("Category is successfully deleted!") # prompts that the category has been deleted
 
+# function that view a category
 def viewACategory(categ_id):
-	view_query = "SELECT * FROM category WHERE category_id =" + str(categ_id)
-	create_cursor.execute(view_query)
-	result = create_cursor.fetchone()
+	view_query = "SELECT * FROM category WHERE category_id =" + str(categ_id) # query statement
+	create_cursor.execute(view_query) # executes the query statement to the database
+	result = create_cursor.fetchone()  # fetch one
 
 	print("\n")
-	if result != None:
-		for key, value in result.items():
-			print(f"{key} : {value}")
+	if result != None:	# if result is not none or has a value
+		for key, value in result.items():	# navigate through results (dictionary)
+			print(f"{key} : {value}")	# print the values
 	
-	create_cursor.execute(f"select title from task where category_id = '{categ_id}'")
-	task_name = create_cursor.fetchall()
+	create_cursor.execute(f"select title from task where category_id = '{categ_id}'") # get the tasks in that category and execute the query statement
+	task_name = create_cursor.fetchall() # fetch match tuples
 
-	if task_name != None:
-		print(f"Tasks:")
+	if task_name != None:	# if task_name has values
+		print(f"Tasks:")	# print
 	
-		for x in task_name:
+		for x in task_name:		# print values
 			for key, value in x.items():
-				print("\t" + str(value)) # key: value
+				print("\t" + str(value))
 
+# function that adds a task to a category
 def addTasktoCategory(task_id, categ_id):
-	query = f"UPDATE task SET category_id = '{categ_id}' WHERE task_id = '{task_id}'"
-	create_cursor.execute(query)
-	mariadb_connection.commit()
+	query = f"UPDATE task SET category_id = '{categ_id}' WHERE task_id = '{task_id}'" # query statement
+	create_cursor.execute(query)	# execute the query statement
+	mariadb_connection.commit()		# commit
 	print("Task is successfully added to a category!")
 
 print("\n----------------- Welcome!!! -----------------")
@@ -270,7 +272,7 @@ while True:
 
 	elif c == 6: #creates a category
 		categCounter += 1 # increments the categCounter 
-		print(categCounter)
+		print(f"\nNumber of categories: " + str(categCounter))
 		categ_name = input("\nEnter category name (must not exceed 15 characters): ") # asks the client to input the name of the category to be created
 		categ_description = input("Enter category description (must not exceed 100 characters): ") # asks the client to input the description of the category to be created
 
