@@ -173,6 +173,12 @@ def viewACategory(categ_id):
 	else:
 		print("No task in this category!")
 
+def addTasktoCategory(task_id, categ_id):
+	query = f"UPDATE task SET category_id = '{categ_id}' WHERE task_id = '{task_id}'"
+	create_cursor.execute(query)
+	mariadb_connection.commit()
+	print("Task is successfully added to a category!")
+
 print("\n----------------- Welcome!!! -----------------")
 categoryCount()
 
