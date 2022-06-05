@@ -4,7 +4,8 @@ CMSC 127 PROJECT By:
     Brixter Sien Pineda 
     Vincent Rodriguez
 
-Task Record System A simplified version of a task listing app where you can list a task and put it in a category
+Task Record System:
+    A simplified version of a task listing app where you can list a task and put it in a category
 
 App features: 
 
