@@ -1,11 +1,13 @@
 CMSC 127 PROJECT By:
-Alexa Cordero
-Brixter Sien Pineda 
-Vincent Rodriguez
+    
+    Alexa Cordero
+    Brixter Sien Pineda 
+    Vincent Rodriguez
 
 Task Record System A simplified version of a task listing app where you can list a task and put it in a category
 
 App features: 
+
     Create Task 
     Edit Task 
     Delete Task 
