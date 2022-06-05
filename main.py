@@ -318,16 +318,16 @@ while True:
 
 	elif c == 9: #add task to a category
 		# categCounter
-		task_id = input("\nEnter task id: ")
-		if check_ID(task_id, 'task'):
+		task_id = input("\nEnter task id: ")	# enter task id
+		if check_ID(task_id, 'task'):		# checks if the task id exists
 			
-			if categCounter > 0:
-				printAll('category')
-				categ_id = input("Enter category id: ")
-				if check_ID(categ_id, 'category'):
-					addTasktoCategory(task_id, categ_id)
+			if categCounter > 0:		# if 1 or more category exists
+				printAll('category')	# prints all category for choices
+				categ_id = input("Enter category id: ")		# ask the category id
+				if check_ID(categ_id, 'category'):		# check if the category id exists
+					addTasktoCategory(task_id, categ_id)	# call the addTaskToCategory function passing task_id and categ_id
 			else:
-				print("Error: client must first create a category!")
+				print("Error: client must first create a category!") # prompts if there is no category created.
 				
 	elif c == 10: #edit category
 		category_id = input("\nEnter id: ") #asks for an id
